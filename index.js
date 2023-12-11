@@ -14,7 +14,7 @@ function createCourse() {
     .map((category) => category.trim());
 
   const course = {
-    id: id++,
+    id: id + 1,
     author: username,
     title: title,
     description: description,
@@ -94,61 +94,64 @@ function logout() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const storedCourses = JSON.parse(localStorage.getItem("courses"));
+  const storedCourses = JSON.parse(localStorage.getItem("courses"));
 
-    if (storedCourses && storedCourses.length > 0) {
-        courses.push(...storedCourses);
+  if (storedCourses && storedCourses.length > 0) {
+    courses.push(...storedCourses);
 
-        courses.forEach((course) => {
-        const allCourses = document.querySelector('.all-container');
-        const courseCard = document.createElement('div');
-        courseCard.classList.add('card');
-        allCourses.appendChild(courseCard);
-    
-        const courseImg = document.createElement('img');
-        courseImg.classList.add('card-img-top');
-        courseImg.setAttribute('src', course.srcImg); 
-        courseCard.appendChild(courseImg);
-    
-        const cardBody = document.createElement('div');
-        cardBody.classList.add('card-body');
-        courseCard.appendChild(cardBody);
-    
-        const courseTitle = document.createElement('h5');
-        courseTitle.classList.add('card-title');
-        courseTitle.innerText = course.title;
-        cardBody.appendChild(courseTitle);
-    
-        const courseDescription = document.createElement('p');
-        courseDescription.classList.add('card-text');
-        courseDescription.innerText = course.description;
-        cardBody.appendChild(courseDescription);
+    courses.forEach((course) => {
+      const allCourses = document.querySelector(".all-container");
+      const courseCard = document.createElement("div");
+      courseCard.classList.add("card");
+      allCourses.appendChild(courseCard);
 
-        const listGroup = document.createElement('ul');
-        listGroup.classList.add('list-group', 'list-group-flush');
-        
-        const authorSignature = document.createElement('li');
-        authorSignature.classList.add('list-group-item');
-        authorSignature.innerText = `author: ${course.author}`;
+      const courseImg = document.createElement("img");
+      courseImg.classList.add("card-img-top");
+      courseImg.setAttribute("src", course.srcImg);
+      courseCard.appendChild(courseImg);
 
-        const readMore = document.createElement('li');
-        readMore.classList.add('list-group-item');
-        readMore.innerHTML = ` <button
+      const cardBody = document.createElement("div");
+      cardBody.classList.add("card-body");
+      courseCard.appendChild(cardBody);
+
+      const courseTitle = document.createElement("h5");
+      courseTitle.classList.add("card-title");
+      courseTitle.innerText = course.title;
+      cardBody.appendChild(courseTitle);
+
+      const courseDescription = document.createElement("p");
+      courseDescription.classList.add("card-text");
+
+      //facendo lo split posso visualizzare solo la prima frase
+      const firstSentence = course.description.split(". ")[0];
+      courseDescription.innerText = firstSentence + `...`;
+      cardBody.appendChild(courseDescription);
+
+      const listGroup = document.createElement("ul");
+      listGroup.classList.add("list-group", "list-group-flush");
+
+      const authorSignature = document.createElement("li");
+      authorSignature.classList.add("list-group-item");
+      authorSignature.innerText = `author: ${course.author}`;
+
+      const readMore = document.createElement("li");
+      readMore.classList.add("list-group-item");
+      readMore.innerHTML = ` <button
         type="button"
         class="btn btn-dark"
         style="height: min-content"
         data-bs-toggle="modal"
         data-bs-target="#readMoreModal"
         id="readMoreBtn"
+        data-course-id="${course.id}"
       >
         Read info
       </button>`;
-        
-        listGroup.appendChild(authorSignature);
-        listGroup.appendChild(readMore);
-        cardBody.appendChild(listGroup);
+      listGroup.appendChild(authorSignature);
+      listGroup.appendChild(readMore);
+      cardBody.appendChild(listGroup);
     });
-    }
+  }
   // Aggiungi corso BTN event listener
   document
     .getElementById("addCourseBtn")
@@ -177,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const descriptionInput = document.createElement("textarea");
       descriptionInput.setAttribute("placeholder", "Course Description");
-      descriptionInput.setAttribute("id", "inputDescription"); 
+      descriptionInput.setAttribute("id", "inputDescription");
       descriptionInput.classList.add("form-control");
       modalBody.appendChild(descriptionInput);
 
@@ -218,5 +221,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
       modalTitle.innerHTML = "";
       modalBody.innerHTML = "";
+    });
+
+  document
+    .getElementById("readMoreBtn")
+    .addEventListener("click", function (event) {
+      const courseId = event.target.getAttribute("data-course-id");
+      console.log(courseId);
+      const course = courses.find((course) => course.id === parseInt(courseId));
+      console.log(course);
+      if (course) {
+        const titleCourse = document.createElement("h5");
+        titleCourse.innerText = course.title;
+        const courseModalTitle = document.querySelector("#modalCourseTitle");
+        courseModalTitle.appendChild(titleCourse);
+
+        const courseModalBody = document.querySelector("#courseModalBody");
+        courseModalDescription = document.createElement("p");
+        courseModalDescription.innerText = course.description;
+        courseModalBody.appendChild(courseModalDescription);
+
+        const courseModalAuthor = document.createElement("span");
+        courseModalAuthor.classList.add("badge", "text-bg-dark");
+        courseModalAuthor.innerHTML = course.author;
+        courseModalTitle.appendChild(courseModalAuthor);
+
+        //voglio vedere i tag.
+        const courseModalTagsLabel = document.createElement("h5");
+        courseModalTagsLabel.innerText = "Tags:";
+        courseModalBody.appendChild(courseModalTagsLabel);
+        course.categories.forEach((category) => {
+          const courseModalTag = document.createElement("span");
+          courseModalTag.classList.add("badge", "text-bg-dark");
+          courseModalTag.innerHTML = category;
+          courseModalBody.appendChild(courseModalTag);
+        });
+      }
+    });
+
+  document
+    .getElementById("closeBtnforReadMore")
+    .addEventListener("click", function () {
+      const courseModalTitle = document.querySelector("#modalCourseTitle");
+      const courseModalBody = document.querySelector("#courseModalBody");
+
+      courseModalBody.innerHTML = "";
+      courseModalTitle.innerHTML = "";
     });
 });
