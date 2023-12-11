@@ -1,0 +1,44 @@
+footer {
+    padding: 1% 5%;
+    text-align:center;
+    background-color: #373B44;
+    color: white;
+}
+
+section {
+    width: 100%;
+   display: table;
+    margin: 0;
+    max-width: none;
+    background-color: #373B44;
+    padding: 0 10%;
+    height: 100vh;
+}
+
+.git{
+    width: 50px;
+   transition: width 1s;
+}
+
+.git:hover{
+    width: 55px;
+}
+
+
+.container, .all-container{
+    display: flex;
+    flex-flow: row wrap;
+
+}
+
+.category-title{
+    margin-top: 5%;
+    color: white;
+}
+
+.card{
+    margin-top: 20px;
+}
+.card-img-top{
+    max-width:350px;
+}
