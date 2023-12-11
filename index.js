@@ -1,8 +1,6 @@
 let username = "";
 const courses = [];
-
 var id = 0;
-
 function createCourse() {
   const title = document.getElementById("inputTitle").value;
   const description = document.getElementById("inputDescription").value;
@@ -14,7 +12,7 @@ function createCourse() {
     .map((category) => category.trim());
 
   const course = {
-    id: id + 1,
+    id: ++id,
     author: username,
     title: title,
     description: description,
@@ -259,13 +257,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-  document
+    document
     .getElementById("closeBtnforReadMore")
     .addEventListener("click", function () {
       const courseModalTitle = document.querySelector("#modalCourseTitle");
       const courseModalBody = document.querySelector("#courseModalBody");
-
+  
       courseModalBody.innerHTML = "";
       courseModalTitle.innerHTML = "";
     });
+  
 });
