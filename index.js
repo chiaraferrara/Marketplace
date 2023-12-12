@@ -27,7 +27,6 @@ function createCourse() {
   courses.push(course);
   console.log(course);
   updateLocalStorage();
-  location.reload();
 }
 
 function editCourse({ id, title, description, srcImg, categories }) {
@@ -361,6 +360,7 @@ document.addEventListener('DOMContentLoaded', function () {
             deleteButton.addEventListener('click', function () {
               deleteCourse(course.id);
               console.log('Deleted!!!');
+              location.reload();
             });
 
             modalHeader.appendChild(deleteButton);
@@ -455,6 +455,10 @@ document.getElementById('addCourseBtn').addEventListener('click', function () {
   closeBtnforReadMore.click();
 });
 
+document.getElementById('createcourseButton').addEventListener('click', function(){
+  createCourse();
+  location.reload();
+})
 //se chiudo il modal dell'aggiunta corso, devo svuotare il body! Così se riclicco non è duplicato.
 document.getElementById('closeBtnforAddCourse').addEventListener('click', function () {
   console.log(`eliminazione...`);
