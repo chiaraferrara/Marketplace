@@ -11,13 +11,19 @@ function createCourse() {
   // divisione delle categorie nell'array
   const categories = categoriesInput.split(',').map(category => category.trim());
 
+  //questo mi consente di trovare l'ultimo id nell'array e incrememntarlo di 1.
+
+  const lastCourse = courses[courses.length - 1];
+  const lastId = lastCourse ? lastCourse.id : 0;
+
+
   const course = {
-    id: ++id,
+    id: lastId + 1,
     author: username,
     title: title,
     description: description,
     srcImg: srcImg,
-    categories: [],
+    categories: categories,
   };
   courses.push(course);
   console.log(course);
@@ -162,159 +168,151 @@ document.addEventListener('DOMContentLoaded', function () {
       listGroup.appendChild(readMore);
       cardBody.appendChild(readMoreBtn);
       cardBody.appendChild(listGroup);
-    
-  
-
+      (function (currentId) {
       document.getElementById(`readMoreBtn-${index}`).addEventListener('click', function () {
         const course = courses.find(course => course.id === id);
-        
+        console.log(course);
         // Creazione dei nuovi elementi per il modal
         const modalDialog = document.createElement('div');
         modalDialog.classList.add('modal-dialog');
-      
+
         const modalContent = document.createElement('div');
         modalContent.classList.add('modal-content');
-      
+
         const modalHeader = document.createElement('div');
         modalHeader.classList.add('modal-header');
-      
+
         const modalTitle = document.createElement('h1');
         modalTitle.classList.add('modal-title', 'fs-5');
         modalTitle.setAttribute('id', 'modalCourseTitle');
         modalTitle.innerText = course.title;
-      
+
         const closeButton = document.createElement('button');
         closeButton.setAttribute('type', 'button');
         closeButton.classList.add('btn-close');
         closeButton.setAttribute('data-bs-dismiss', 'modal');
         closeButton.setAttribute('aria-label', 'Close');
         closeButton.setAttribute('id', 'closeBtnforReadMore');
-      
+
         const modalBody = document.createElement('div');
         modalBody.classList.add('modal-body');
         modalBody.setAttribute('id', 'courseModalBody');
-      
+
         const modalFooter = document.createElement('div');
         modalFooter.classList.add('modal-footer');
-      
+
         // Aggiunta degli elementi creati al modal
         modalHeader.appendChild(modalTitle);
         modalHeader.appendChild(closeButton);
-      
+
         modalContent.appendChild(modalHeader);
         modalContent.appendChild(modalBody);
         modalContent.appendChild(modalFooter);
-      
+
         modalDialog.appendChild(modalContent);
-      
+
         // Aggiunta del modal al documento
         const readMoreModal = document.getElementById('readMoreModal');
         readMoreModal.innerHTML = '';
         readMoreModal.appendChild(modalDialog);
-      
+
         // Aggiunta del contenuto al corpo del modal
         const courseModalDescription = document.createElement('p');
         courseModalDescription.innerText = course.description;
         modalBody.appendChild(courseModalDescription);
-      
+
         const courseModalAuthor = document.createElement('span');
         courseModalAuthor.classList.add('badge', 'text-bg-dark');
         courseModalAuthor.innerHTML = course.author;
         modalBody.appendChild(courseModalAuthor);
-      
+
         const courseModalTagsLabel = document.createElement('h5');
         courseModalTagsLabel.innerText = 'Tags:';
         modalBody.appendChild(courseModalTagsLabel);
-      
+
         course.categories.forEach(category => {
           const courseModalTag = document.createElement('span');
           courseModalTag.classList.add('badge', 'text-bg-dark');
           courseModalTag.innerHTML = category;
-          modalBody.appendChild(courseModalTag); 
-          
-          
-          
-          document.getElementById('closeBtnforReadMore').addEventListener('click', function () {
-        const courseModalTitle = document.querySelector('#modalCourseTitle');
-        const courseModalBody = document.querySelector('#courseModalBody');
-    
-        courseModalBody.innerHTML = '';
-        courseModalTitle.innerHTML = '';
-      })
-        }); 
-        
-        
-       
+          modalBody.appendChild(courseModalTag);
+        });
+
+        const closeBtnforReadMore = document.getElementById('closeBtnforReadMore');
+        if (closeBtnforReadMore) {
+          closeBtnforReadMore.addEventListener('click', function () {
+            const courseModalTitle = document.querySelector('#modalCourseTitle');
+            const courseModalBody = document.querySelector('#courseModalBody');
+
+            courseModalBody.innerHTML = '';
+            courseModalTitle.innerHTML = '';
+          });
+        }
       });
+    })(id);
+    });
+  }
+});
 
+// Aggiungi corso BTN event listener
+document.getElementById('addCourseBtn').addEventListener('click', function () {
+  const modalTitle = document.querySelector('#modalTitle'); //titolo del modal
+  const modalBody = document.querySelector('#modalBody'); //corpo del modal
 
-     
-    })
+  const userModal = document.createElement('h3');
+  userModal.innerText = `${username} add a course!`;
 
-  // Aggiungi corso BTN event listener
-  document.getElementById('addCourseBtn').addEventListener('click', function () {
-    const modalTitle = document.querySelector('#modalTitle'); //titolo del modal
-    const modalBody = document.querySelector('#modalBody'); //corpo del modal
+  modalTitle.appendChild(userModal);
 
-    const userModal = document.createElement('h3');
-    userModal.innerText = `${username} add a course!`;
+  const titleField = document.createElement('h5');
+  titleField.innerText = `Title:`;
+  modalBody.appendChild(titleField);
 
-    modalTitle.appendChild(userModal);
+  const titleInput = document.createElement('input');
+  titleInput.setAttribute('placeholder', 'Course Title'); //placeholder dell'imput title
+  titleInput.setAttribute('id', 'inputTitle'); //id di title mi serve per prenderne il valore.
+  titleInput.classList.add('form-control');
+  modalBody.appendChild(titleInput);
 
-    const titleField = document.createElement('h5');
-    titleField.innerText = `Title:`;
-    modalBody.appendChild(titleField);
+  const descriptionField = document.createElement('h5');
+  descriptionField.innerText = `Description:`;
+  modalBody.appendChild(descriptionField);
 
-    const titleInput = document.createElement('input');
-    titleInput.setAttribute('placeholder', 'Course Title'); //placeholder dell'imput title
-    titleInput.setAttribute('id', 'inputTitle'); //id di title mi serve per prenderne il valore.
-    titleInput.classList.add('form-control');
-    modalBody.appendChild(titleInput);
+  const descriptionInput = document.createElement('textarea');
+  descriptionInput.setAttribute('placeholder', 'Course Description');
+  descriptionInput.setAttribute('id', 'inputDescription');
+  descriptionInput.classList.add('form-control');
+  modalBody.appendChild(descriptionInput);
 
-    const descriptionField = document.createElement('h5');
-    descriptionField.innerText = `Description:`;
-    modalBody.appendChild(descriptionField);
+  // ImgSrc
+  const srcImgField = document.createElement('h5');
+  srcImgField.innerText = `Image URL:`;
+  modalBody.appendChild(srcImgField);
 
-    const descriptionInput = document.createElement('textarea');
-    descriptionInput.setAttribute('placeholder', 'Course Description');
-    descriptionInput.setAttribute('id', 'inputDescription');
-    descriptionInput.classList.add('form-control');
-    modalBody.appendChild(descriptionInput);
+  const srcImgInput = document.createElement('input');
+  srcImgInput.setAttribute('placeholder', 'Image URL');
+  srcImgInput.setAttribute('type', 'url'); // SOLO URL
+  srcImgInput.setAttribute('id', 'inputSrcImg');
+  srcImgInput.classList.add('form-control');
+  modalBody.appendChild(srcImgInput);
 
-    // ImgSrc
-    const srcImgField = document.createElement('h5');
-    srcImgField.innerText = `Image URL:`;
-    modalBody.appendChild(srcImgField);
+  // CATEGORIES
+  const categoriesField = document.createElement('h5');
+  categoriesField.innerText = `Categories:`;
+  modalBody.appendChild(categoriesField);
 
-    const srcImgInput = document.createElement('input');
-    srcImgInput.setAttribute('placeholder', 'Image URL');
-    srcImgInput.setAttribute('type', 'url'); // SOLO URL
-    srcImgInput.setAttribute('id', 'inputSrcImg');
-    srcImgInput.classList.add('form-control');
-    modalBody.appendChild(srcImgInput);
+  const categoriesInput = document.createElement('input');
+  categoriesInput.setAttribute('placeholder', 'Separate categories with commas');
+  categoriesInput.setAttribute('id', 'inputCategories');
+  categoriesInput.classList.add('form-control');
+  modalBody.appendChild(categoriesInput);
+});
 
-    // CATEGORIES
-    const categoriesField = document.createElement('h5');
-    categoriesField.innerText = `Categories:`;
-    modalBody.appendChild(categoriesField);
+//se chiudo il modal dell'aggiunta corso, devo svuotare il body! Così se riclicco non è duplicato.
+document.getElementById('closeBtnforAddCourse').addEventListener('click', function () {
+  console.log(`eliminazione...`);
+  const modalTitle = document.querySelector('#modalTitle');
+  const modalBody = document.querySelector('#modalBody');
 
-    const categoriesInput = document.createElement('input');
-    categoriesInput.setAttribute('placeholder', 'Separate categories with commas');
-    categoriesInput.setAttribute('id', 'inputCategories');
-    categoriesInput.classList.add('form-control');
-    modalBody.appendChild(categoriesInput);
-  });
-
-  //se chiudo il modal dell'aggiunta corso, devo svuotare il body! Così se riclicco non è duplicato.
-  document.getElementById('closeBtnforAddCourse').addEventListener('click', function () {
-    console.log(`eliminazione...`);
-    const modalTitle = document.querySelector('#modalTitle');
-    const modalBody = document.querySelector('#modalBody');
-
-    modalTitle.innerHTML = '';
-    modalBody.innerHTML = '';
-  });
-
-  
-
- }})
+  modalTitle.innerHTML = '';
+  modalBody.innerHTML = '';
+});
