@@ -98,6 +98,71 @@ function logout() {
   document.getElementById('inputUsername').classList.remove('d-none');
 }
 
+function showCoursesByCategory(category) {
+  const coursesToShow = getCoursesByCategory(category);
+  const categoryContainer = document.getElementById('category-container');
+
+  categoryContainer.innerHTML = '';
+
+
+  for (let i = 0; i < Math.min(4, coursesToShow.length); i++) {
+    const course = coursesToShow[i];
+
+    const courseCard = document.createElement('div');
+    courseCard.classList.add('card');
+    categoryContainer.appendChild(courseCard);
+
+    const courseImg = document.createElement('img');
+    courseImg.classList.add('card-img-top');
+    courseImg.setAttribute('src', course.srcImg);
+    courseCard.appendChild(courseImg);
+
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    courseCard.appendChild(cardBody);
+
+    const courseTitle = document.createElement('h5');
+    courseTitle.classList.add('card-title');
+    courseTitle.innerText = course.title;
+    cardBody.appendChild(courseTitle);
+
+    const courseDescription = document.createElement('p');
+    courseDescription.classList.add('card-text');
+    const firstSentence = course.description.split('. ')[0];
+    courseDescription.innerText = firstSentence + `...`;
+    cardBody.appendChild(courseDescription);
+
+    const listGroup = document.createElement('ul');
+    listGroup.classList.add('list-group', 'list-group-flush');
+
+    const authorSignature = document.createElement('li');
+    authorSignature.classList.add('list-group-item');
+    authorSignature.innerText = `author: ${course.author}`;
+
+    const readMore = document.createElement('li');
+    readMore.classList.add('list-group-item');
+
+    const readMoreBtn = document.createElement('button');
+    readMoreBtn.innerText = 'Read info';
+    readMoreBtn.classList.add('btn', 'btn-dark');
+    readMoreBtn.style.height = 'min-content';
+    readMoreBtn.setAttribute('type', 'button');
+    readMoreBtn.setAttribute('data-bs-toggle', 'modal');
+    readMoreBtn.setAttribute('data-bs-target', '#readMoreModal');
+    readMoreBtn.setAttribute('id', `readMoreBtn-${i}`);
+    listGroup.appendChild(authorSignature);
+    listGroup.appendChild(readMore);
+    cardBody.appendChild(readMoreBtn);
+    cardBody.appendChild(listGroup);
+
+
+    categoryContainer.appendChild(courseCard);
+  }
+}
+
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
   // courses.forEach((course => {
   //   const id = course.id;
@@ -106,8 +171,11 @@ document.addEventListener('DOMContentLoaded', function () {
   // }))
 
   const storedCourses = JSON.parse(localStorage.getItem('courses'));
-
+if(storedCourses.length >0){
+  document.getElementById('categoryall').classList.remove('d-none');
+}
   if (storedCourses && storedCourses.length > 0) {
+    
     courses.push(...storedCourses);
 
     storedCourses.forEach((course, index) => {
@@ -251,6 +319,23 @@ document.addEventListener('DOMContentLoaded', function () {
     })(id);
     });
   }
+
+  const categoryButtonsContainer = document.getElementById('categoryButtons');
+  const uniqueCategories = getCategories();
+  
+  uniqueCategories.forEach(category => {
+    const categoryButton = document.createElement('button');
+    categoryButton.innerText = category;
+    categoryButton.classList.add('btn', 'btn-outline-light', 'me-2');
+  
+    categoryButton.addEventListener('click', function () {
+      // metodo che mostrerà solo i corsi della categoria.
+      showCoursesByCategory(category);
+    });
+  
+    categoryButtonsContainer.appendChild(categoryButton);
+  });
+
 });
 
 // Aggiungi corso BTN event listener
@@ -305,6 +390,7 @@ document.getElementById('addCourseBtn').addEventListener('click', function () {
   categoriesInput.setAttribute('id', 'inputCategories');
   categoriesInput.classList.add('form-control');
   modalBody.appendChild(categoriesInput);
+  closeBtnforReadMore.click();
 });
 
 //se chiudo il modal dell'aggiunta corso, devo svuotare il body! Così se riclicco non è duplicato.
