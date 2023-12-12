@@ -10,7 +10,7 @@ section {
    display: table;
     margin: 0;
     max-width: none;
-    background-color: #373B44;
+    background-color: #373b44de;
     padding: 0 10%;
     height: 100vh;
 }
@@ -38,7 +38,12 @@ section {
 
 .card{
     margin-top: 20px;
+    margin-inline: 2%;
 }
 .card-img-top{
     max-width:350px;
+}
+
+.card-text{
+    max-width: 250px;
 }

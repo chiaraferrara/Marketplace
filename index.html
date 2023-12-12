@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -16,7 +18,7 @@
       crossorigin="anonymous"
     ></script>
     <link rel="stylesheet" href="style.css" />
-    <script src="index.js"></script>
+    
   </head>
 
   <body>
@@ -30,7 +32,7 @@
           type="button"
           class="btn btn-dark d-none"
           style="height: min-content"
-          data-bs-toggle="modal"
+          data-bs-toggle="modal" 
           data-bs-target="#addModal"
           id="addCourseBtn"
         >
@@ -48,13 +50,7 @@
             />
           </div>
           <!-- bottone login -->
-          <button
-            type="button"
-            class="btn btn-dark"
-            style="height: min-content"
-            id="log-in-btn"
-            onclick="login()"
-          >
+          <button type="button" class="btn btn-dark" style="height: min-content" id="log-in-btn" onclick="login()">
             Login
           </button>
           <button
@@ -71,18 +67,11 @@
     </nav>
 
     <section>
-        <h3 class="category-title">All</h3>
-      <div class="all-container">
-      </div>
+      <h3 class="category-title">All</h3>
+      <div class="all-container"></div>
 
       <!-- fine navbar -->
-      <div
-        class="modal fade"
-        id="addModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
+      <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -100,18 +89,34 @@
             </div>
             <div class="modal-footer">
               <!-- add course btn -->
-              <button
-                type="button"
-                class="btn btn-dark"
-                onclick="createCourse()"
-              >
-                Add Course
-              </button>
+              <button type="button" class="btn btn-dark" onclick="createCourse()">Add Course</button>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- modale del readMore -->
+      <div class="modal fade" id="readMoreModal" tabindex="-1" aria-labelledby="readMoreModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="modalCourseTitle"></h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                id="closeBtnforReadMore"
+              ></button>
+            </div>
+            <div class="modal-body" id="courseModalBody">              
+            </div>
+            <div class="modal-footer"></div>
+          </div>
+        </div>
+      </div>
     </section>
+    <script src="index.js"></script>
   </body>
 
   <footer>
