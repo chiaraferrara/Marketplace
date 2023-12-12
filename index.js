@@ -162,8 +162,95 @@ document.addEventListener('DOMContentLoaded', function () {
       listGroup.appendChild(readMore);
       cardBody.appendChild(readMoreBtn);
       cardBody.appendChild(listGroup);
-    });
-  }
+    
+  
+
+      document.getElementById(`readMoreBtn-${index}`).addEventListener('click', function () {
+        const course = courses.find(course => course.id === id);
+        
+        // Creazione dei nuovi elementi per il modal
+        const modalDialog = document.createElement('div');
+        modalDialog.classList.add('modal-dialog');
+      
+        const modalContent = document.createElement('div');
+        modalContent.classList.add('modal-content');
+      
+        const modalHeader = document.createElement('div');
+        modalHeader.classList.add('modal-header');
+      
+        const modalTitle = document.createElement('h1');
+        modalTitle.classList.add('modal-title', 'fs-5');
+        modalTitle.setAttribute('id', 'modalCourseTitle');
+        modalTitle.innerText = course.title;
+      
+        const closeButton = document.createElement('button');
+        closeButton.setAttribute('type', 'button');
+        closeButton.classList.add('btn-close');
+        closeButton.setAttribute('data-bs-dismiss', 'modal');
+        closeButton.setAttribute('aria-label', 'Close');
+        closeButton.setAttribute('id', 'closeBtnforReadMore');
+      
+        const modalBody = document.createElement('div');
+        modalBody.classList.add('modal-body');
+        modalBody.setAttribute('id', 'courseModalBody');
+      
+        const modalFooter = document.createElement('div');
+        modalFooter.classList.add('modal-footer');
+      
+        // Aggiunta degli elementi creati al modal
+        modalHeader.appendChild(modalTitle);
+        modalHeader.appendChild(closeButton);
+      
+        modalContent.appendChild(modalHeader);
+        modalContent.appendChild(modalBody);
+        modalContent.appendChild(modalFooter);
+      
+        modalDialog.appendChild(modalContent);
+      
+        // Aggiunta del modal al documento
+        const readMoreModal = document.getElementById('readMoreModal');
+        readMoreModal.innerHTML = '';
+        readMoreModal.appendChild(modalDialog);
+      
+        // Aggiunta del contenuto al corpo del modal
+        const courseModalDescription = document.createElement('p');
+        courseModalDescription.innerText = course.description;
+        modalBody.appendChild(courseModalDescription);
+      
+        const courseModalAuthor = document.createElement('span');
+        courseModalAuthor.classList.add('badge', 'text-bg-dark');
+        courseModalAuthor.innerHTML = course.author;
+        modalBody.appendChild(courseModalAuthor);
+      
+        const courseModalTagsLabel = document.createElement('h5');
+        courseModalTagsLabel.innerText = 'Tags:';
+        modalBody.appendChild(courseModalTagsLabel);
+      
+        course.categories.forEach(category => {
+          const courseModalTag = document.createElement('span');
+          courseModalTag.classList.add('badge', 'text-bg-dark');
+          courseModalTag.innerHTML = category;
+          modalBody.appendChild(courseModalTag); 
+          
+          
+          
+          document.getElementById('closeBtnforReadMore').addEventListener('click', function () {
+        const courseModalTitle = document.querySelector('#modalCourseTitle');
+        const courseModalBody = document.querySelector('#courseModalBody');
+    
+        courseModalBody.innerHTML = '';
+        courseModalTitle.innerHTML = '';
+      })
+        }); 
+        
+        
+       
+      });
+
+
+     
+    })
+
   // Aggiungi corso BTN event listener
   document.getElementById('addCourseBtn').addEventListener('click', function () {
     const modalTitle = document.querySelector('#modalTitle'); //titolo del modal
