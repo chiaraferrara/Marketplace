@@ -16,7 +16,6 @@ function createCourse() {
   const lastCourse = courses[courses.length - 1];
   const lastId = lastCourse ? lastCourse.id : 0;
 
-
   const course = {
     id: lastId + 1,
     author: username,
@@ -104,7 +103,6 @@ function showCoursesByCategory(category) {
 
   categoryContainer.innerHTML = '';
 
-
   for (let i = 0; i < Math.min(4, coursesToShow.length); i++) {
     const course = coursesToShow[i];
 
@@ -155,13 +153,9 @@ function showCoursesByCategory(category) {
     cardBody.appendChild(readMoreBtn);
     cardBody.appendChild(listGroup);
 
-
     categoryContainer.appendChild(courseCard);
   }
 }
-
-
-
 
 document.addEventListener('DOMContentLoaded', function () {
   // courses.forEach((course => {
@@ -171,11 +165,10 @@ document.addEventListener('DOMContentLoaded', function () {
   // }))
 
   const storedCourses = JSON.parse(localStorage.getItem('courses'));
-if(storedCourses.length >0){
-  document.getElementById('categoryall').classList.remove('d-none');
-}
+  if (storedCourses.length > 0) {
+    document.getElementById('categoryall').classList.remove('d-none');
+  }
   if (storedCourses && storedCourses.length > 0) {
-    
     courses.push(...storedCourses);
 
     storedCourses.forEach((course, index) => {
@@ -237,146 +230,167 @@ if(storedCourses.length >0){
       cardBody.appendChild(readMoreBtn);
       cardBody.appendChild(listGroup);
       (function (currentId) {
-      document.getElementById(`readMoreBtn-${index}`).addEventListener('click', function () {
-        const course = courses.find(course => course.id === id);
-        console.log(course);
-        // Creazione dei nuovi elementi per il modal
-        const modalDialog = document.createElement('div');
-        modalDialog.classList.add('modal-dialog');
+        document.getElementById(`readMoreBtn-${index}`).addEventListener('click', function () {
+          const course = courses.find(course => course.id === id);
+          console.log(course);
+          // Creazione dei nuovi elementi per il modal
+          const modalDialog = document.createElement('div');
+          modalDialog.classList.add('modal-dialog');
 
-        const modalContent = document.createElement('div');
-        modalContent.classList.add('modal-content');
+          const modalContent = document.createElement('div');
+          modalContent.classList.add('modal-content');
 
-        const modalHeader = document.createElement('div');
-        modalHeader.classList.add('modal-header');
+          const modalHeader = document.createElement('div');
+          modalHeader.classList.add('modal-header');
 
-        const modalTitle = document.createElement('input');
-        // modalTitle.classList.add('form-control', 'fs-5');
-        modalTitle.setAttribute('id', 'modalCourseTitle');
-        modalTitle.setAttribute('value', `${course.title}`);
-        modalTitle.setAttribute('disabled', true);        //INPUT PER IL TITOLO
-        modalTitle.innerText = course.title;
+          const modalTitle = document.createElement('input');
+          // modalTitle.classList.add('form-control', 'fs-5');
+          modalTitle.setAttribute('id', 'modalCourseTitle');
+          modalTitle.setAttribute('value', `${course.title}`);
+          modalTitle.setAttribute('disabled', true); //INPUT PER IL TITOLO
+          modalTitle.innerText = course.title;
 
-        const closeButton = document.createElement('button');
-        closeButton.setAttribute('type', 'button');
-        closeButton.classList.add('btn-close');
-        closeButton.setAttribute('data-bs-dismiss', 'modal');
-        closeButton.setAttribute('aria-label', 'Close');
-        closeButton.setAttribute('id', 'closeBtnforReadMore');
+          const closeButton = document.createElement('button');
+          closeButton.setAttribute('type', 'button');
+          closeButton.classList.add('btn-close');
+          closeButton.setAttribute('data-bs-dismiss', 'modal');
+          closeButton.setAttribute('aria-label', 'Close');
+          closeButton.setAttribute('id', 'closeBtnforReadMore');
 
-        const modalBody = document.createElement('div');
-        modalBody.classList.add('modal-body');
-        modalBody.setAttribute('id', 'courseModalBody');
+          const modalBody = document.createElement('div');
+          modalBody.classList.add('modal-body');
+          modalBody.setAttribute('id', 'courseModalBody');
 
-        const modalFooter = document.createElement('div');
-        modalFooter.classList.add('modal-footer');
+          const modalFooter = document.createElement('div');
+          modalFooter.classList.add('modal-footer');
 
-        // Aggiunta degli elementi creati al modal
-        modalBody.appendChild(modalTitle);
-       
+          // Aggiunta degli elementi creati al modal
+          modalBody.appendChild(modalTitle);
 
-        modalContent.appendChild(modalHeader);
-        modalContent.appendChild(modalBody);
-        modalContent.appendChild(modalFooter);
+          modalContent.appendChild(modalHeader);
+          modalContent.appendChild(modalBody);
+          modalContent.appendChild(modalFooter);
 
-        modalDialog.appendChild(modalContent);
+          modalDialog.appendChild(modalContent);
 
-        // Aggiunta del modal al documento
-        const readMoreModal = document.getElementById('readMoreModal');
-        readMoreModal.innerHTML = '';
-        readMoreModal.appendChild(modalDialog);
+          // Aggiunta del modal al documento
+          const readMoreModal = document.getElementById('readMoreModal');
+          readMoreModal.innerHTML = '';
+          readMoreModal.appendChild(modalDialog);
 
-        // Aggiunta del contenuto al corpo del modal
-        const courseModalDescription = document.createElement('textarea');
-        courseModalDescription.innerText = course.description;
-        // courseModalDescription.classList.add('form-control');
-        courseModalDescription.setAttribute('disabled', true); //TEXTAREA PER LA DESCRIZIONE
-        // courseModalDescription.setAttribute('value', `${course.description}`)
-        modalBody.appendChild(courseModalDescription);
+          // Aggiunta del contenuto al corpo del modal
+          const courseModalDescription = document.createElement('textarea');
+          courseModalDescription.innerText = course.description;
+          // courseModalDescription.classList.add('form-control');
+          courseModalDescription.setAttribute('disabled', true); //TEXTAREA PER LA DESCRIZIONE
+          // courseModalDescription.setAttribute('value', `${course.description}`)
+          modalBody.appendChild(courseModalDescription);
 
+          const courseModalAuthor = document.createElement('span');
+          courseModalAuthor.classList.add('badge', 'text-bg-dark');
+          courseModalAuthor.innerHTML = course.author;
+          modalBody.appendChild(courseModalAuthor);
 
-        const courseModalAuthor = document.createElement('span');
-        courseModalAuthor.classList.add('badge', 'text-bg-dark');
-        courseModalAuthor.innerHTML = course.author;
-        modalBody.appendChild(courseModalAuthor);
+          const courseModalTagsLabel = document.createElement('h5');
+          courseModalTagsLabel.innerText = 'Tags:';
+          modalBody.appendChild(courseModalTagsLabel);
 
-        const courseModalTagsLabel = document.createElement('h5');
-        courseModalTagsLabel.innerText = 'Tags:';
-        modalBody.appendChild(courseModalTagsLabel);
-
-        course.categories.forEach(category => {
-          const courseModalTag = document.createElement('span');
-          courseModalTag.classList.add('badge', 'text-bg-dark');
-          courseModalTag.innerHTML = category;
-          modalBody.appendChild(courseModalTag);
-        });
-
-        //MODIFICA DEL CORSO SE AUTORE == USERNAME
-
-        if(username == course.author){
-        const editButton = document.createElement('button');
-        editButton.innerHTML = `<img src="assets/edit.svg" alt="Edit" style="width: 20px; height: 20px;">`;
-        editButton.classList.add('editbutton');
-        editButton.setAttribute('id', 'editCourse');
-    modalHeader.appendChild(editButton);
-        editButton.addEventListener('click', function () {
-          modalTitle.disabled = !modalTitle.disabled;
-          courseModalDescription.disabled = !courseModalDescription.disabled;
-       
-        });
-    
-        
- }
-
- 
- 
- if(username == course.author){
-  const deleteButton = document.createElement('button');
-  deleteButton.innerHTML = `<img src="assets/delete.svg" alt="Delete" style="width: 20px; height: 20px;">`;
-  deleteButton.classList.add('editbutton');
-  deleteButton.setAttribute('id', 'deleteCourse');
-
-  deleteButton.addEventListener('click', function () {
-    deleteCourse(course.id);
-    console.log("Deleted!!!")
-
- 
-  });
-
-  modalHeader.appendChild(deleteButton);
-}
-modalHeader.appendChild(closeButton);
-        const closeBtnforReadMore = document.getElementById('closeBtnforReadMore');
-        if (closeBtnforReadMore) {
-          closeBtnforReadMore.addEventListener('click', function () {
-            const courseModalTitle = document.querySelector('#modalCourseTitle');
-            const courseModalBody = document.querySelector('#courseModalBody');
-
-            courseModalBody.innerHTML = '';
-            courseModalTitle.innerHTML = '';
+          course.categories.forEach(category => {
+            const courseModalTag = document.createElement('span');
+            courseModalTag.classList.add('badge', 'text-bg-dark');
+            courseModalTag.innerHTML = category;
+            modalBody.appendChild(courseModalTag);
           });
-        }
-      });
-    })(id);
+
+          //MODIFICA DEL CORSO SE AUTORE == USERNAME
+          var visible = false;
+          if (username == course.author) {
+            const editButton = document.createElement('button');
+            editButton.innerHTML = `<img src="assets/edit.svg" alt="Edit" style="width: 20px; height: 20px;">`;
+            editButton.classList.add('editbutton');
+            editButton.setAttribute('id', 'editCourse');
+            modalHeader.appendChild(editButton);
+            editButton.addEventListener('click', function () {
+              visible = !visible;
+              modalTitle.disabled = !modalTitle.disabled;
+              courseModalDescription.disabled = !courseModalDescription.disabled;
+              if (visible == true) {
+                const saveEditsButton = document.createElement('button');
+
+                const saveImage = document.createElement('img');
+                saveImage.src = 'assets/save.svg';
+                saveImage.alt = 'Save';
+
+                saveEditsButton.appendChild(saveImage);
+                saveEditsButton.classList.add('saveEditsButton');
+
+                saveEditsButton.addEventListener('click', function () {
+                  //EDIT BUTTON
+                  editCourse({
+                    id: course.id,
+                    title: modalTitle.value, 
+                    description: courseModalDescription.value, 
+                    srcImg: course.srcImg,
+                    categories: course.categories,
+                  });
+                  modalTitle.disabled = !modalTitle.disabled;
+                  courseModalDescription.disabled = !courseModalDescription.disabled;
+                });
+
+                console.log(visible);
+                modalFooter.appendChild(saveEditsButton);
+              }else{
+                modalFooter.innerHTML='';
+              }
+            });
+          }
+
+          if (username == course.author) {
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = `<img src="assets/delete.svg" alt="Delete" style="width: 20px; height: 20px;">`;
+            deleteButton.classList.add('editbutton');
+            deleteButton.setAttribute('id', 'deleteCourse');
+
+            deleteButton.addEventListener('click', function () {
+              deleteCourse(course.id);
+              console.log('Deleted!!!');
+            });
+
+            modalHeader.appendChild(deleteButton);
+          }
+          if (visible == true) {
+            modalHeader.appendChild(closeButton);
+          }
+          const closeBtnforReadMore = document.getElementById('closeBtnforReadMore');
+          if (closeBtnforReadMore) {
+            closeBtnforReadMore.addEventListener('click', function () {
+              const courseModalTitle = document.querySelector('#modalCourseTitle');
+              const courseModalBody = document.querySelector('#courseModalBody');
+
+              courseModalBody.innerHTML = '';
+              courseModalTitle.innerHTML = '';
+            });
+          }
+        });
+      })(id);
     });
   }
 
   const categoryButtonsContainer = document.getElementById('categoryButtons');
   const uniqueCategories = getCategories();
-  
+
   uniqueCategories.forEach(category => {
     const categoryButton = document.createElement('button');
     categoryButton.innerText = category;
     categoryButton.classList.add('btn', 'btn-outline-light', 'me-2');
-  
+
     categoryButton.addEventListener('click', function () {
       // metodo che mostrerà solo i corsi della categoria.
       showCoursesByCategory(category);
     });
-  
+
     categoryButtonsContainer.appendChild(categoryButton);
   });
-
 });
 
 // Aggiungi corso BTN event listener

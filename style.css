@@ -88,3 +88,6 @@ textarea:disabled, input:disabled{
 }
 
 
+.saveEditsButton{
+    border:1px solid transparent;
+}
