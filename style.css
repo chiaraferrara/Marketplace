@@ -39,11 +39,20 @@ section {
 .card{
     margin-top: 20px;
     margin-inline: 2%;
+    margin-bottom: 20px;
+    max-width: 326px;
+    box-shadow:  0px 12px 20rgba(0, 0, 0, 0.123)ack;
 }
 .card-img-top{
     max-width:350px;
 }
 
-.card-text{
-    max-width: 250px;
+
+
+#categoryButtons{
+    display:flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 4%;
 }
