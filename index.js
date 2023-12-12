@@ -250,9 +250,11 @@ if(storedCourses.length >0){
         const modalHeader = document.createElement('div');
         modalHeader.classList.add('modal-header');
 
-        const modalTitle = document.createElement('h1');
-        modalTitle.classList.add('modal-title', 'fs-5');
+        const modalTitle = document.createElement('input');
+        // modalTitle.classList.add('form-control', 'fs-5');
         modalTitle.setAttribute('id', 'modalCourseTitle');
+        modalTitle.setAttribute('value', `${course.title}`);
+        modalTitle.setAttribute('disabled', true);        //INPUT PER IL TITOLO
         modalTitle.innerText = course.title;
 
         const closeButton = document.createElement('button');
@@ -270,8 +272,8 @@ if(storedCourses.length >0){
         modalFooter.classList.add('modal-footer');
 
         // Aggiunta degli elementi creati al modal
-        modalHeader.appendChild(modalTitle);
-        modalHeader.appendChild(closeButton);
+        modalBody.appendChild(modalTitle);
+       
 
         modalContent.appendChild(modalHeader);
         modalContent.appendChild(modalBody);
@@ -285,9 +287,13 @@ if(storedCourses.length >0){
         readMoreModal.appendChild(modalDialog);
 
         // Aggiunta del contenuto al corpo del modal
-        const courseModalDescription = document.createElement('p');
+        const courseModalDescription = document.createElement('textarea');
         courseModalDescription.innerText = course.description;
+        // courseModalDescription.classList.add('form-control');
+        courseModalDescription.setAttribute('disabled', true); //TEXTAREA PER LA DESCRIZIONE
+        // courseModalDescription.setAttribute('value', `${course.description}`)
         modalBody.appendChild(courseModalDescription);
+
 
         const courseModalAuthor = document.createElement('span');
         courseModalAuthor.classList.add('badge', 'text-bg-dark');
@@ -305,6 +311,41 @@ if(storedCourses.length >0){
           modalBody.appendChild(courseModalTag);
         });
 
+        //MODIFICA DEL CORSO SE AUTORE == USERNAME
+
+        if(username == course.author){
+        const editButton = document.createElement('button');
+        editButton.innerHTML = `<img src="assets/edit.svg" alt="Edit" style="width: 20px; height: 20px;">`;
+        editButton.classList.add('editbutton');
+        editButton.setAttribute('id', 'editCourse');
+    modalHeader.appendChild(editButton);
+        editButton.addEventListener('click', function () {
+          modalTitle.disabled = !modalTitle.disabled;
+          courseModalDescription.disabled = !courseModalDescription.disabled;
+       
+        });
+    
+        
+ }
+
+ 
+ 
+ if(username == course.author){
+  const deleteButton = document.createElement('button');
+  deleteButton.innerHTML = `<img src="assets/delete.svg" alt="Delete" style="width: 20px; height: 20px;">`;
+  deleteButton.classList.add('editbutton');
+  deleteButton.setAttribute('id', 'deleteCourse');
+
+  deleteButton.addEventListener('click', function () {
+    deleteCourse(course.id);
+    console.log("Deleted!!!")
+
+ 
+  });
+
+  modalHeader.appendChild(deleteButton);
+}
+modalHeader.appendChild(closeButton);
         const closeBtnforReadMore = document.getElementById('closeBtnforReadMore');
         if (closeBtnforReadMore) {
           closeBtnforReadMore.addEventListener('click', function () {
