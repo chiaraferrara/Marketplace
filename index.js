@@ -278,6 +278,11 @@ document.addEventListener('DOMContentLoaded', function () {
           readMoreModal.innerHTML = '';
           readMoreModal.appendChild(modalDialog);
 
+          const coursemodalImg = document.createElement('img');
+          coursemodalImg.classList.add('img-fluid');
+          coursemodalImg.setAttribute('src', course.srcImg);
+          modalBody.appendChild(coursemodalImg);
+
           // Aggiunta del contenuto al corpo del modal
           const courseModalDescription = document.createElement('textarea');
           courseModalDescription.innerText = course.description;
@@ -328,19 +333,20 @@ document.addEventListener('DOMContentLoaded', function () {
                   //EDIT BUTTON
                   editCourse({
                     id: course.id,
-                    title: modalTitle.value, 
-                    description: courseModalDescription.value, 
+                    title: modalTitle.value,
+                    description: courseModalDescription.value,
                     srcImg: course.srcImg,
                     categories: course.categories,
                   });
                   modalTitle.disabled = !modalTitle.disabled;
                   courseModalDescription.disabled = !courseModalDescription.disabled;
+                  location.reload(); //RELOAD PER AGGIORNAMENTO
                 });
 
                 console.log(visible);
                 modalFooter.appendChild(saveEditsButton);
-              }else{
-                modalFooter.innerHTML='';
+              } else {
+                modalFooter.innerHTML = '';
               }
             });
           }
@@ -354,6 +360,7 @@ document.addEventListener('DOMContentLoaded', function () {
             deleteButton.addEventListener('click', function () {
               deleteCourse(course.id);
               console.log('Deleted!!!');
+              location.reload();
             });
 
             modalHeader.appendChild(deleteButton);
@@ -448,6 +455,10 @@ document.getElementById('addCourseBtn').addEventListener('click', function () {
   closeBtnforReadMore.click();
 });
 
+document.getElementById('createcourseButton').addEventListener('click', function(){
+  createCourse();
+  location.reload();
+})
 //se chiudo il modal dell'aggiunta corso, devo svuotare il body! Così se riclicco non è duplicato.
 document.getElementById('closeBtnforAddCourse').addEventListener('click', function () {
   console.log(`eliminazione...`);
