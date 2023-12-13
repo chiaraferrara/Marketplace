@@ -3,6 +3,8 @@
 let username = '';
 const courses = [];
 var id = 0;
+
+
 function createCourse() {
   const title = document.getElementById('inputTitle').value;
   const description = document.getElementById('inputDescription').value;
@@ -163,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
   //   const title = course.title;
   //   const description = course.description;
   // }))
-
+  
   const storedCourses = JSON.parse(localStorage.getItem('courses'));
   if (storedCourses.length > 0) {
     document.getElementById('categoryall').classList.remove('d-none');
@@ -300,6 +302,8 @@ document.addEventListener('DOMContentLoaded', function () {
           courseModalTagsLabel.innerText = 'Tags:';
           modalBody.appendChild(courseModalTagsLabel);
 
+
+       
           course.categories.forEach(category => {
             const courseModalTag = document.createElement('span');
             courseModalTag.classList.add('badge', 'text-bg-dark');
@@ -319,7 +323,10 @@ document.addEventListener('DOMContentLoaded', function () {
               visible = !visible;
               modalTitle.disabled = !modalTitle.disabled;
               courseModalDescription.disabled = !courseModalDescription.disabled;
-              if (visible == true) {
+              
+              // document.getElementById('categoriesEditInput').classList.remove('d-none');
+
+              if (visible == false) {
                 const saveEditsButton = document.createElement('button');
 
                 const saveImage = document.createElement('img');
@@ -330,13 +337,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 saveEditsButton.classList.add('saveEditsButton');
 
                 saveEditsButton.addEventListener('click', function () {
+
+                  const categoriesEditInput = document.getElementById('inputEditCategories').value;
+                  // divisione delle categorie nell'array
+                  const categories = categoriesEditInput.split(',').map(category => category.trim());
+
                   //EDIT BUTTON
                   editCourse({
                     id: course.id,
                     title: modalTitle.value,
                     description: courseModalDescription.value,
                     srcImg: course.srcImg,
-                    categories: course.categories,
+                    categories: categories, //cambiare questo con valore tags!
                   });
                   modalTitle.disabled = !modalTitle.disabled;
                   courseModalDescription.disabled = !courseModalDescription.disabled;
@@ -351,6 +363,19 @@ document.addEventListener('DOMContentLoaded', function () {
             });
           }
 
+             //AGGIUNTA TAG nella MODIFICA
+             if(username == course.author){
+              const categoriesEditInput = document.createElement('input');
+              categoriesEditInput.setAttribute('placeholder', 'Add separated by comma.');
+              categoriesEditInput.setAttribute('id', 'inputEditCategories'); 
+              // categoriesEditInput.classList.add('d-none');
+              categoriesEditInput.setAttribute('disabled', true); //da gestire disabled!
+              categoriesEditInput.classList.add('form-control');    
+    
+              modalBody.appendChild(categoriesEditInput);
+            }
+
+            
           if (username == course.author) {
             const deleteButton = document.createElement('button');
             deleteButton.innerHTML = `<img src="assets/delete.svg" alt="Delete" style="width: 20px; height: 20px;">`;
@@ -455,10 +480,10 @@ document.getElementById('addCourseBtn').addEventListener('click', function () {
   closeBtnforReadMore.click();
 });
 
-document.getElementById('createcourseButton').addEventListener('click', function(){
+document.getElementById('createcourseButton').addEventListener('click', function () {
   createCourse();
   location.reload();
-})
+});
 //se chiudo il modal dell'aggiunta corso, devo svuotare il body! Così se riclicco non è duplicato.
 document.getElementById('closeBtnforAddCourse').addEventListener('click', function () {
   console.log(`eliminazione...`);
